@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import * as Styled from "./style";
-import { url } from "../../../api/url";
+import Selector from "./Selector";
+import CardList from "./CardList";
 
 function MainPage() {
-  const [Data, setData] = useState([]);
-
-  useEffect(() => {}, []);
-
-  return <Styled.Layout>안녕하세요?ㅇㅇ</Styled.Layout>;
+  return (
+    <Styled.Layout>
+      <Selector />
+      <CardList />
+    </Styled.Layout>
+  );
 }
 
 export default MainPage;

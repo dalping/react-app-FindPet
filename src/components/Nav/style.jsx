@@ -6,6 +6,7 @@ export const NavLayout = styled.div`
   width: 100vw;
   position: fixed;
   padding: 20px;
+  z-index: 1080;
 
   h3 {
     color: white;
