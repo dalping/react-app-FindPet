@@ -1,9 +1,25 @@
 import styled from "styled-components";
 
+const setStateColor = (val) => {
+  switch (val) {
+    case "보호중":
+      return "green";
+    case "종료(안락사)":
+      return "grey";
+    case "종료(반환)":
+      return "red";
+    case "종료(자연사)":
+      return "grey";
+    case "종료(입양)":
+      return "red";
+  }
+};
+
 export const Layout = styled.div`
   padding: 20px;
   padding-top: 80px;
   width: 100vw;
+  box-sizing: border-box;
 `;
 
 export const SelectorLayout = styled.div`
@@ -50,6 +66,7 @@ export const CardWrapper = styled.div`
   strong {
     font-weight: 1000;
     color: green;
+    color: ${(props) => setStateColor(props.processState)};
   }
 `;
 
@@ -114,4 +131,17 @@ export const DetailModalwrapper = styled.div`
     gap: 10px;
     padding: 10px 0;
   }
+`;
+
+export const Loading = styled.div`
+  position: fixed;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.5);
 `;

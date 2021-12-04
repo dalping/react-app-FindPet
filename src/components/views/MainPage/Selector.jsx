@@ -10,21 +10,23 @@ function Selector({ setOption }) {
   const [Sigungu, setSigungu] = useState([]);
   const [SelectedItem, setSelectedItem] = useState({ sido: "", sigungu: "" });
   useEffect(() => {
-    axios.get(getAPI("sido", "")).then((res) => {
+    axios.get(getAPI("sido", "&numOfRows=20")).then((res) => {
       setSido(res.data.response.body.items.item);
+      console.log(res.data.response.body);
     });
   }, []);
 
   const setSidoHandler = (e) => {
     if (e.target.value === "basic") {
       setSigungu([]);
+      setOption({ sido: "", sigungu: "" });
       return;
     }
 
     axios.get(getAPI("sigungu", `&upr_cd=${e.target.value}`)).then((res) => {
       setSigungu(res.data.response.body.items.item);
       //setSelectedOption({ sido: e.target.value });
-      setOption({ sido: e.target.value });
+      setOption({ sido: e.target.value, sigungu: "" });
     });
   };
 
@@ -39,7 +41,7 @@ function Selector({ setOption }) {
     <Styled.SelectorLayout>
       {Sido && (
         <select className="sido" onChange={setSidoHandler}>
-          <option value="basic">--선택--</option>
+          <option value="basic">전국</option>
           {Sido.map((data) => (
             <option key={data.orgCd} value={data.orgCd}>
               {data.orgdownNm}
@@ -49,7 +51,7 @@ function Selector({ setOption }) {
       )}
       {Sigungu && (
         <select className="sigungu" onChange={setSigunguHandler}>
-          <option value="basic">--선택--</option>
+          <option value="basic">시군구</option>
           {Sigungu.map((data) => (
             <option key={data.orgCd} value={data.orgCd}>
               {data.orgdownNm}

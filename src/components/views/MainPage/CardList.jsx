@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { getAPI } from "../../../utils/getData";
 import DetailModal from "./DetailModal";
+import Loading from "./Loading";
 import * as Styled from "./style";
 
 function CardList({ SelectedOption }) {
@@ -11,6 +12,7 @@ function CardList({ SelectedOption }) {
   const [DetailData, setDetailData] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
   const interSectRef = useRef();
+  const [FinalData, setFinalData] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, { threshold: 1 });
@@ -21,6 +23,7 @@ function CardList({ SelectedOption }) {
   useEffect(() => {
     setPage(1);
     setData([]);
+    setFinalData(false);
     console.log("SelectedOption change");
   }, [SelectedOption]);
 
@@ -30,8 +33,13 @@ function CardList({ SelectedOption }) {
     const optionURL = `&numOfRows=20&pageNo=${Page}` + makeURL();
 
     axios.get(getAPI("abandonmentPublic", optionURL)).then((res) => {
-      console.log(res.data.response.body);
-      setData(Data.concat(res.data.response.body.items.item));
+      const data = res.data.response.body.items.item;
+      if (!data) {
+        setFinalData(true);
+        setIsLoaded(false);
+        return;
+      }
+      setData(Data.concat(data));
       setIsLoaded(false);
     });
   }, [Page]);
@@ -75,6 +83,8 @@ function CardList({ SelectedOption }) {
       {OpenDetailModal && (
         <DetailModal data={DetailData} closeDetailModal={closeDetailModal} />
       )}
+      {isLoaded && <Loading />}
+
       <Styled.CardListLayout>
         {Data.map((data, idx) => (
           <Styled.CardWrapper
@@ -82,6 +92,7 @@ function CardList({ SelectedOption }) {
             onClick={() => {
               setDetailModalHandler(data);
             }}
+            processState={data.processState}
           >
             <img alt="" src={data.popfile} />
             <strong className="state">{data.processState}</strong>
@@ -93,6 +104,19 @@ function CardList({ SelectedOption }) {
         ))}
         <div className="observer" ref={interSectRef}></div>
       </Styled.CardListLayout>
+      {FinalData && (
+        <div
+          style={{
+            padding: "20px 10px",
+            color: "black",
+            backgroundColor: "#DFDFDF",
+            boxSizing: "border-box",
+            margin: "20px 0",
+          }}
+        >
+          더 이상 표시할 데이터가 없습니다...
+        </div>
+      )}
     </div>
   );
 }

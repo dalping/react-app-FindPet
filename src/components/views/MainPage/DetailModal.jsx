@@ -2,6 +2,7 @@ import React from "react";
 import * as Styled from "./style";
 
 function DetailModal({ data, closeDetailModal }) {
+  console.log(data);
   return (
     <Styled.DetailModalLayout onClick={closeDetailModal}>
       <Styled.DetailModalwrapper>
