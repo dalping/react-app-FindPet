@@ -4,7 +4,7 @@ import axios from "axios";
 import { getAPI } from "../../../utils/getData";
 import * as Styled from "./style";
 
-function Selector() {
+function Selector({ setOption }) {
   //sido, sigungu, shelter, kind
   const [Sido, setSido] = useState([]);
   const [Sigungu, setSigungu] = useState([]);
@@ -15,7 +15,7 @@ function Selector() {
     });
   }, []);
 
-  const getSigungu = (e) => {
+  const setSidoHandler = (e) => {
     if (e.target.value === "basic") {
       setSigungu([]);
       return;
@@ -23,13 +23,22 @@ function Selector() {
 
     axios.get(getAPI("sigungu", `&upr_cd=${e.target.value}`)).then((res) => {
       setSigungu(res.data.response.body.items.item);
+      //setSelectedOption({ sido: e.target.value });
+      setOption({ sido: e.target.value });
     });
+  };
+
+  const setSigunguHandler = (e) => {
+    if (e.target.value === "basic") {
+      return;
+    }
+    setOption({ sigungu: e.target.value });
   };
 
   return (
     <Styled.SelectorLayout>
       {Sido && (
-        <select className="sido" onChange={getSigungu}>
+        <select className="sido" onChange={setSidoHandler}>
           <option value="basic">--선택--</option>
           {Sido.map((data) => (
             <option key={data.orgCd} value={data.orgCd}>
@@ -39,7 +48,7 @@ function Selector() {
         </select>
       )}
       {Sigungu && (
-        <select className="sigungu">
+        <select className="sigungu" onChange={setSigunguHandler}>
           <option value="basic">--선택--</option>
           {Sigungu.map((data) => (
             <option key={data.orgCd} value={data.orgCd}>

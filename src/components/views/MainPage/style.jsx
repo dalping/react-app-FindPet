@@ -35,10 +35,16 @@ export const CardWrapper = styled.div`
   img {
     width: 100%;
     height: 150px;
+    object-fit: cover;
   }
 
   span {
+    width: 100%;
+    display: inline-block;
     font-size: 0.8rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   strong {
@@ -63,7 +69,49 @@ export const DetailModalLayout = styled.div`
 
 export const DetailModalwrapper = styled.div`
   background-color: white;
+  display: flex;
+  flex-direction: column;
   width: 50vw;
   height: 80vh;
   border-radius: 10px;
+  padding: 30px;
+  overflow: scroll;
+
+  .noticeNo {
+    color: gray;
+    margin-bottom: 10px;
+  }
+
+  .AnimalImg {
+    background-color: black;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    overflow: scroll;
+
+    img {
+      height: 100%;
+    }
+  }
+
+  .AnimalInfo {
+    gap: 10px;
+    margin: 20px 0;
+    th {
+      padding: 5px 0;
+      width: 100px;
+    }
+
+    td {
+      padding: 5px 0;
+    }
+  }
+
+  .careInfo {
+    border-top: 1px solid #dfdfdf;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0;
+  }
 `;
