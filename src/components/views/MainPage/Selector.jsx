@@ -12,7 +12,6 @@ function Selector({ setOption }) {
   useEffect(() => {
     axios.get(getAPI("sido", "&numOfRows=20")).then((res) => {
       setSido(res.data.response.body.items.item);
-      console.log(res.data.response.body);
     });
   }, []);
 

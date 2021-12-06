@@ -7,7 +7,7 @@ import * as Styled from "./style";
 
 function CardList({ SelectedOption }) {
   const [Data, setData] = useState([]);
-  const [Page, setPage] = useState(1);
+  const [Page, setPage] = useState(0);
   const [OpenDetailModal, setOpenDetailModal] = useState(false);
   const [DetailData, setDetailData] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
@@ -21,16 +21,17 @@ function CardList({ SelectedOption }) {
   }, [handleObserver]);
 
   useEffect(() => {
-    setPage(1);
+    setPage(0);
     setData([]);
     setFinalData(false);
     console.log("SelectedOption change");
   }, [SelectedOption]);
 
   useEffect(() => {
+    if (Page === 0) return;
     setIsLoaded(true);
 
-    const optionURL = `&numOfRows=20&pageNo=${Page}` + makeURL();
+    const optionURL = `&numOfRows=30&pageNo=${Page}` + makeURL();
 
     axios.get(getAPI("abandonmentPublic", optionURL)).then((res) => {
       const data = res.data.response.body.items.item;
@@ -61,7 +62,11 @@ function CardList({ SelectedOption }) {
   const handleObserver = useCallback((entries) => {
     const target = entries[0];
     if (target.isIntersecting) {
-      setPage((prev) => prev + 1);
+      if (FinalData) {
+        console.log("마지막 데이터");
+      } else {
+        setPage((prev) => prev + 1);
+      }
     }
   }, []);
 
@@ -102,8 +107,8 @@ function CardList({ SelectedOption }) {
             <span>구조장소 : {data.happenPlace}</span>
           </Styled.CardWrapper>
         ))}
-        <div className="observer" ref={interSectRef}></div>
       </Styled.CardListLayout>
+      <div className="observer" ref={interSectRef} />
       {FinalData && (
         <div
           style={{
