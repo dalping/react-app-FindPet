@@ -20,8 +20,10 @@ function MainPage() {
 
   return (
     <Styled.Layout>
-      <Selector setOption={setOption} />
-      <CardList SelectedOption={SelectedOption} />
+      <div className="MainWrapper">
+        <Selector setOption={setOption} />
+        <CardList SelectedOption={SelectedOption} />
+      </div>
     </Styled.Layout>
   );
 }

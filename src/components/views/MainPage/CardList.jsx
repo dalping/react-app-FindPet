@@ -71,16 +71,21 @@ function CardList({ SelectedOption }) {
   }, []);
 
   const setDetailModalHandler = (data) => {
+    document.body.style.overflow = "hidden";
     setOpenDetailModal(true);
     setDetailData(data);
   };
 
   const closeDetailModal = () => {
+    document.body.style.overflow = "unset";
     setOpenDetailModal(false);
   };
 
   const stylePrevent = {
-    position: "fixed",
+    // position: "fixed",
+    // overFlow: "hidden",
+    // width: "100%",
+    // height: "100%",
   };
 
   return (

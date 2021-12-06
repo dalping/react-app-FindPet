@@ -8,7 +8,6 @@ function Selector({ setOption }) {
   //sido, sigungu, shelter, kind
   const [Sido, setSido] = useState([]);
   const [Sigungu, setSigungu] = useState([]);
-  const [SelectedItem, setSelectedItem] = useState({ sido: "", sigungu: "" });
   useEffect(() => {
     axios.get(getAPI("sido", "&numOfRows=20")).then((res) => {
       setSido(res.data.response.body.items.item);

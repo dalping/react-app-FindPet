@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Styled from "./style";
+import { CloseOutlined } from "@ant-design/icons";
 
 function DetailModal({ data, closeDetailModal }) {
-  console.log(data);
+  const [ViewImage, setViewImage] = useState(false);
+
+  const openImageViewer = () => {
+    setViewImage(!ViewImage);
+  };
+
   return (
     <Styled.DetailModalLayout onClick={closeDetailModal}>
-      <Styled.DetailModalwrapper>
+      <Styled.DetailModalwrapper onClick={(e) => e.stopPropagation()}>
+        <CloseOutlined className="closeBtn" onClick={closeDetailModal} />
         <span className="noticeNo">{data.noticeNo}</span>
-        <div className="AnimalImg">
+        {ViewImage && (
+          <div className="imgView" onClick={openImageViewer}>
+            <img alt="" src={data.popfile} />
+          </div>
+        )}
+        <div className="AnimalImg" onClick={openImageViewer}>
           <img alt="" src={data.popfile}></img>
         </div>
         <table className="AnimalInfo">

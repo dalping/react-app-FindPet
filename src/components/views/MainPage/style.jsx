@@ -17,9 +17,40 @@ const setStateColor = (val) => {
 
 export const Layout = styled.div`
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding-top: 80px;
   width: 100vw;
   box-sizing: border-box;
+
+  .MainWrapper {
+    width: 1728px;
+  }
+
+  @media (max-width: 1919px) {
+    .MainWrapper {
+      width: 1376px;
+    }
+  }
+
+  @media (max-width: 1440px) {
+    .MainWrapper {
+      width: 1024px;
+    }
+  }
+
+  @media (max-width: 1056px) {
+    .MainWrapper {
+      width: 768px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .MainWrapper {
+      width: 100%;
+    }
+  }
 `;
 
 export const SelectorLayout = styled.div`
@@ -27,21 +58,31 @@ export const SelectorLayout = styled.div`
 `;
 
 export const CardListLayout = styled.div`
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
-  gap: 20px;
+  width: 100%;
 `;
 
 export const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 15vw;
   border-radius: 5px;
   padding: 10px;
   border: 1px solid black;
   gap: 10px;
   cursor: pointer;
   transition: all 0.5s;
+  box-sizing: border-box;
+  margin: 1rem;
+  width: calc(25% - 2rem);
+
+  @media (max-width: 1056px) {
+    width: calc(100% / 3 - 2rem);
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
 
   &:hover {
     background-color: #ebebeb;
@@ -50,7 +91,7 @@ export const CardWrapper = styled.div`
 
   img {
     width: 100%;
-    height: 150px;
+    height: 30vh;
     object-fit: cover;
   }
 
@@ -78,8 +119,10 @@ export const DetailModalLayout = styled.div`
   top: 0;
   left: 0;
   width: 100vw;
+  backdrop-filter: blur(5px);
   height: 100vh;
   padding-top: 30px;
+  box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 3000;
 `;
@@ -87,12 +130,38 @@ export const DetailModalLayout = styled.div`
 export const DetailModalwrapper = styled.div`
   background-color: white;
   display: flex;
+  position: relative;
   flex-direction: column;
-  width: 50vw;
-  height: 80vh;
+  width: 70vw;
+  max-height: 80vh;
   border-radius: 10px;
+  box-sizing: border-box;
   padding: 30px;
   overflow: scroll;
+
+  .closeBtn {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+  }
+
+  .imgView {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: scroll;
+    background-color: black;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 100%;
+      cursor: pointer;
+    }
+  }
 
   .noticeNo {
     color: gray;
@@ -100,14 +169,16 @@ export const DetailModalwrapper = styled.div`
   }
 
   .AnimalImg {
+    border-radius: 5px;
     background-color: black;
-    height: 50%;
+    height: 40vh;
     display: flex;
     justify-content: center;
     overflow: scroll;
 
     img {
       height: 100%;
+      cursor: pointer;
     }
   }
 
