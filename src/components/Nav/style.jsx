@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const NavLayout = styled.div`
   background-color: black;
   display: flex;
-  width: 100vw;
+  width: 100%;
   position: fixed;
   padding: 20px;
   z-index: 1080;

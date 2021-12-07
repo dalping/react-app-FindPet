@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { ThemedStyledInterface } from "styled-components";
 
 const setStateColor = (val) => {
   switch (val) {
@@ -21,26 +21,56 @@ export const Layout = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 80px;
-  width: 100vw;
+  width: 100%;
   box-sizing: border-box;
 
   .MainWrapper {
     width: 1728px;
   }
 
-  @media (max-width: 1919px) {
+  ${({ theme }) => theme.main.media.pc3} {
     .MainWrapper {
       width: 1376px;
     }
   }
 
-  @media (max-width: 1440px) {
+  ${({ theme }) => theme.main.media.pc2} {
     .MainWrapper {
       width: 1024px;
     }
   }
 
-  @media (max-width: 1056px) {
+  ${({ theme }) => theme.main.media.pc1} {
+    .MainWrapper {
+      width: 768px;
+    }
+  }
+
+  ${({ theme }) => theme.main.media.tab2} {
+    .MainWrapper {
+      width: 100%;
+    }
+  }
+
+  ${({ theme }) => theme.main.media.tab1} {
+    .MainWrapper {
+      width: 100%;
+    }
+  }
+
+  /* @media screen and (max-width: 1919px) {
+    .MainWrapper {
+      width: 1376px;
+    }
+  }
+
+  @media screen and (max-width: 1440px) {
+    .MainWrapper {
+      width: 1024px;
+    }
+  }
+
+  @media screen and (max-width: 1056px) {
     .MainWrapper {
       width: 768px;
     }
@@ -50,7 +80,7 @@ export const Layout = styled.div`
     .MainWrapper {
       width: 100%;
     }
-  }
+  } */
 `;
 
 export const SelectorLayout = styled.div`
@@ -70,17 +100,24 @@ export const CardWrapper = styled.div`
   padding: 10px;
   border: 1px solid black;
   gap: 10px;
+  overflow: hidden;
   cursor: pointer;
   transition: all 0.5s;
   box-sizing: border-box;
   margin: 1rem;
   width: calc(25% - 2rem);
 
-  @media (max-width: 1056px) {
+  //1056
+  ${({ theme }) => theme.main.media.pc1} {
     width: calc(100% / 3 - 2rem);
   }
 
-  @media (max-width: 767px) {
+  ${({ theme }) => theme.main.media.tab2} {
+    width: calc(100% / 2 - 2rem);
+  }
+
+  //767
+  ${({ theme }) => theme.main.media.tab1} {
     width: 100%;
   }
 
@@ -92,6 +129,7 @@ export const CardWrapper = styled.div`
   img {
     width: 100%;
     height: 30vh;
+    overflow: hidden;
     object-fit: cover;
   }
 
@@ -132,34 +170,70 @@ export const DetailModalwrapper = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
-  width: 70vw;
-  max-height: 80vh;
+  width: 80vw;
+  max-height: 90vh;
   border-radius: 10px;
   box-sizing: border-box;
-  padding: 30px;
+  padding: 20px;
   overflow: scroll;
 
-  .closeBtn {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    font-size: 1.5rem;
-  }
-
-  .imgView {
+  .content {
     width: 100%;
     height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
     overflow: scroll;
-    background-color: black;
-    display: flex;
-    align-items: center;
 
-    img {
+    .imgView {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      cursor: pointer;
+      height: 100%;
+      overflow: scroll;
+      background-color: black;
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 100%;
+        cursor: pointer;
+      }
+    }
+
+    .AnimalImg {
+      border-radius: 5px;
+      width: 100%;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      //overflow: scroll;
+
+      img {
+        width: 100%;
+        cursor: pointer;
+      }
+    }
+
+    .AnimalInfo {
+      font-size: 0.9rem;
+      gap: 10px;
+      margin: 20px 0;
+      th {
+        padding: 5px 0;
+        width: 100px;
+      }
+
+      td {
+        padding: 5px 0;
+      }
+    }
+
+    .careInfo {
+      font-size: 0.9rem;
+      border-top: 1px solid #dfdfdf;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px 0;
     }
   }
 
@@ -168,39 +242,11 @@ export const DetailModalwrapper = styled.div`
     margin-bottom: 10px;
   }
 
-  .AnimalImg {
-    border-radius: 5px;
-    background-color: black;
-    height: 40vh;
-    display: flex;
-    justify-content: center;
-    overflow: scroll;
-
-    img {
-      height: 100%;
-      cursor: pointer;
-    }
-  }
-
-  .AnimalInfo {
-    gap: 10px;
-    margin: 20px 0;
-    th {
-      padding: 5px 0;
-      width: 100px;
-    }
-
-    td {
-      padding: 5px 0;
-    }
-  }
-
-  .careInfo {
-    border-top: 1px solid #dfdfdf;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px 0;
+  .closeBtn {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5em;
+    font-size: 1.5rem;
   }
 `;
 

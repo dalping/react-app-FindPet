@@ -1,5 +1,6 @@
 const path = require("path");
-const RefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+//const RefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   name: "webpack-setting",
@@ -11,9 +12,12 @@ module.exports = {
 
   entry: {
     //제일 중요!
-    app: "./index",
+    app: "./index.js",
   }, // 입력
-
+  output: {
+    path: path.join(__dirname + "/dist/"), // 경로를 합쳐줌
+    filename: "bundle.js",
+  }, // 출력
   // entry에 있는 파일을 읽고 module을 적용한 후 output
   module: {
     rules: [
@@ -35,21 +39,30 @@ module.exports = {
           ],
           plugins: [
             "@babel/plugin-proposal-class-properties",
-            "react-refresh/babel",
+            //"react-refresh/babel",
           ],
         },
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader",
+            options: { minimize: true },
+          },
+        ],
       },
     ],
   },
 
   plugins: [
     //빌드 할때마다 실행됨
-    new RefreshWebpackPlugin(),
+    //new RefreshWebpackPlugin(),
+    new HtmlWebPackPlugin({
+      template: "./public/index.html", // public/index.html 파일을 읽는다.
+      filename: "index.html", // output으로 출력할 파일은 index.html 이다.
+    }),
   ],
-  output: {
-    path: path.join(__dirname, "dist"), // 경로를 합쳐줌
-    filename: "app.js",
-  }, // 출력
   devServer: {
     static: { directory: path.resolve(__dirname, "public") }, //실제로 존재하는 정적 파일들의 경로
     devMiddleware: { publicPath: "/dist/" },

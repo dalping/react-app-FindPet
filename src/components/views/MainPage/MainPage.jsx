@@ -9,9 +9,9 @@ function MainPage() {
     sigungu: "",
   });
 
-  useEffect(() => {
-    console.log(SelectedOption);
-  }, [SelectedOption]);
+  // useEffect(() => {
+  //   console.log(SelectedOption);
+  // }, [SelectedOption]);
 
   //{sido:'',sigungu:'',}
   const setOption = (option) => {
