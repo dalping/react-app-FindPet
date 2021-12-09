@@ -24,7 +24,6 @@ function CardList({ SelectedOption }) {
     setPage(0);
     setData([]);
     setFinalData(false);
-    console.log("SelectedOption change");
   }, [SelectedOption]);
 
   useEffect(() => {

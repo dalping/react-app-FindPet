@@ -15,15 +15,22 @@ function Selector({ setOption }) {
   }, []);
 
   const setSidoHandler = (e) => {
+    setSigungu([]);
+
     if (e.target.value === "basic") {
-      setSigungu([]);
       setOption({ sido: "", sigungu: "" });
       return;
     }
 
     axios.get(getAPI("sigungu", `&upr_cd=${e.target.value}`)).then((res) => {
-      setSigungu(res.data.response.body.items.item);
       //setSelectedOption({ sido: e.target.value });
+      const data = res.data.response.body.items.item;
+      if (!data) {
+        setSigungu([]);
+      } else {
+        setSigungu(data);
+      }
+
       setOption({ sido: e.target.value, sigungu: "" });
     });
   };
@@ -47,7 +54,7 @@ function Selector({ setOption }) {
           ))}
         </select>
       )}
-      {Sigungu && (
+      {Sigungu.length > 0 && (
         <select className="sigungu" onChange={setSigunguHandler}>
           <option value="basic">시군구</option>
           {Sigungu.map((data) => (
