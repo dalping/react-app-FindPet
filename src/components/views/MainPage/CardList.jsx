@@ -4,6 +4,7 @@ import { getAPI } from "../../../utils/getData";
 import DetailModal from "./DetailModal";
 import Loading from "./Loading";
 import * as Styled from "./style";
+import { makeToday } from "../../../utils/makeData";
 
 function CardList({ SelectedOption }) {
   const [Data, setData] = useState([]);
@@ -13,36 +14,63 @@ function CardList({ SelectedOption }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const interSectRef = useRef();
   const [FinalData, setFinalData] = useState(false);
+  const [Today, setToday] = useState(makeToday());
+  const observer = new IntersectionObserver(handleObserver, { threshold: 1 });
+
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(handleObserver, { threshold: 1 });
+  //   if (interSectRef.current) observer.observe(interSectRef.current);
+  //   return () => observer.disconnect();
+  // }, [handleObserver]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(handleObserver, { threshold: 1 });
+    console.log(Today);
+  }, [Today]);
+
+  useEffect(() => {
     if (interSectRef.current) observer.observe(interSectRef.current);
-    return () => observer.disconnect();
-  }, [handleObserver]);
-
-  useEffect(() => {
+    console.log(Page);
+    setFinalData(false);
     setPage(0);
     setData([]);
-    setFinalData(false);
+    return () => observer.disconnect();
   }, [SelectedOption]);
 
   useEffect(() => {
-    if (Page === 0) return;
+    if (Page === 0 || FinalData) return;
     setIsLoaded(true);
 
     const optionURL = `&numOfRows=30&pageNo=${Page}` + makeURL();
 
     axios.get(getAPI("abandonmentPublic", optionURL)).then((res) => {
       const data = res.data.response.body.items.item;
+
       if (!data) {
         setFinalData(true);
         setIsLoaded(false);
         return;
       }
+
+      if (data.length < 30) {
+        setFinalData(true);
+      }
+
       setData(Data.concat(data));
       setIsLoaded(false);
     });
   }, [Page]);
+
+  const getStateProcess = (endDate, process) => {
+    if (process !== "보호중") {
+      return process;
+    }
+
+    if (endDate >= Today) {
+      return "공고중";
+    } else {
+      return "보호중";
+    }
+  };
 
   const makeURL = () => {
     let option = "";
@@ -53,6 +81,14 @@ function CardList({ SelectedOption }) {
 
     if (SelectedOption.sigungu !== "") {
       option = option + `&org_cd=${SelectedOption.sigungu}`;
+    }
+
+    if (SelectedOption.upkind !== "") {
+      option = option + `&upkind=${SelectedOption.upkind}`;
+    }
+
+    if (SelectedOption.kind !== "") {
+      option = option + `&kind=${SelectedOption.kind}`;
     }
 
     return option;
@@ -101,10 +137,12 @@ function CardList({ SelectedOption }) {
             onClick={() => {
               setDetailModalHandler(data);
             }}
-            processState={data.processState}
+            processState={getStateProcess(data.noticeEdt, data.processState)}
           >
             <img alt="" src={data.popfile} />
-            <strong className="state">{data.processState}</strong>
+            <strong className="state">
+              {getStateProcess(data.noticeEdt, data.processState)}
+            </strong>
             <span>품종 : {data.kindCd}</span>
             <span>등록일 : {data.happenDt}</span>
             <span>보호장소 : {data.careNm}</span>

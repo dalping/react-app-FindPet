@@ -7,6 +7,8 @@ function MainPage() {
   const [SelectedOption, setSelectedOption] = useState({
     sido: "",
     sigungu: "",
+    upkind: "",
+    kind: "",
   });
 
   // useEffect(() => {

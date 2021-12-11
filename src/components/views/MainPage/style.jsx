@@ -2,16 +2,12 @@ import styled, { ThemedStyledInterface } from "styled-components";
 
 const setStateColor = (val) => {
   switch (val) {
-    case "보호중":
+    case "공고중":
       return "green";
-    case "종료(안락사)":
-      return "grey";
-    case "종료(반환)":
+    case "보호중":
       return "red";
-    case "종료(자연사)":
+    default:
       return "grey";
-    case "종료(입양)":
-      return "red";
   }
 };
 
@@ -85,6 +81,9 @@ export const Layout = styled.div`
 
 export const SelectorLayout = styled.div`
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 export const CardListLayout = styled.div`
