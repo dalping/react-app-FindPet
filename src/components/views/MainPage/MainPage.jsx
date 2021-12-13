@@ -11,11 +11,6 @@ function MainPage() {
     kind: "",
   });
 
-  // useEffect(() => {
-  //   console.log(SelectedOption);
-  // }, [SelectedOption]);
-
-  //{sido:'',sigungu:'',}
   const setOption = (option) => {
     setSelectedOption({ ...SelectedOption, ...option });
   };

@@ -8,39 +8,47 @@ import { makeToday } from "../../../utils/makeData";
 
 function CardList({ SelectedOption }) {
   const [Data, setData] = useState([]);
-  const [Page, setPage] = useState(0);
+  const [Page, setPage] = useState(1);
   const [OpenDetailModal, setOpenDetailModal] = useState(false);
   const [DetailData, setDetailData] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
-  const interSectRef = useRef();
   const [FinalData, setFinalData] = useState(false);
   const [Today, setToday] = useState(makeToday());
-  const observer = new IntersectionObserver(handleObserver, { threshold: 1 });
-
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(handleObserver, { threshold: 1 });
-  //   if (interSectRef.current) observer.observe(interSectRef.current);
-  //   return () => observer.disconnect();
-  // }, [handleObserver]);
+  const interSectRef = useRef();
 
   useEffect(() => {
-    console.log(Today);
-  }, [Today]);
-
-  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, { threshold: 1 });
     if (interSectRef.current) observer.observe(interSectRef.current);
-    console.log(Page);
-    setFinalData(false);
-    setPage(0);
-    setData([]);
     return () => observer.disconnect();
+  }, [handleObserver]);
+
+  //페이지가 1인 경우 작동
+  useEffect(() => {
+    setFinalData(false);
+    setPage(1);
+    setData([]);
+    getData();
   }, [SelectedOption]);
 
+  //페이지가 1이면 작동하지 말자
   useEffect(() => {
-    if (Page === 0 || FinalData) return;
-    setIsLoaded(true);
+    if (Page === 1 || FinalData) return;
+    getData();
+  }, [Page]);
 
+  const handleObserver = useCallback((entries) => {
+    const target = entries[0];
+    if (target.isIntersecting) {
+      //페이지가 1이면 데이터가 존재할 경우에만 동작
+      //if (Data.length === 0) return;
+      setPage((prev) => prev + 1);
+    }
+  }, []);
+
+  const getData = () => {
     const optionURL = `&numOfRows=30&pageNo=${Page}` + makeURL();
+
+    setIsLoaded(true);
 
     axios.get(getAPI("abandonmentPublic", optionURL)).then((res) => {
       const data = res.data.response.body.items.item;
@@ -58,7 +66,7 @@ function CardList({ SelectedOption }) {
       setData(Data.concat(data));
       setIsLoaded(false);
     });
-  }, [Page]);
+  };
 
   const getStateProcess = (endDate, process) => {
     if (process !== "보호중") {
@@ -94,17 +102,6 @@ function CardList({ SelectedOption }) {
     return option;
   };
 
-  const handleObserver = useCallback((entries) => {
-    const target = entries[0];
-    if (target.isIntersecting) {
-      if (FinalData) {
-        console.log("마지막 데이터");
-      } else {
-        setPage((prev) => prev + 1);
-      }
-    }
-  }, []);
-
   const setDetailModalHandler = (data) => {
     document.body.style.overflow = "hidden";
     setOpenDetailModal(true);
@@ -116,15 +113,8 @@ function CardList({ SelectedOption }) {
     setOpenDetailModal(false);
   };
 
-  const stylePrevent = {
-    // position: "fixed",
-    // overFlow: "hidden",
-    // width: "100%",
-    // height: "100%",
-  };
-
   return (
-    <div style={OpenDetailModal ? stylePrevent : null}>
+    <div>
       {OpenDetailModal && (
         <DetailModal data={DetailData} closeDetailModal={closeDetailModal} />
       )}
@@ -161,7 +151,7 @@ function CardList({ SelectedOption }) {
             margin: "20px 0",
           }}
         >
-          더 이상 표시할 데이터가 없습니다...
+          표시할 데이터가 없습니다...
         </div>
       )}
     </div>

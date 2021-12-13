@@ -9,6 +9,7 @@ function Selector({ setOption }) {
   const [Sido, setSido] = useState([]);
   const [Sigungu, setSigungu] = useState([]);
   const [Kind, setKind] = useState([]);
+
   useEffect(() => {
     axios.get(getAPI("sido", "&numOfRows=20")).then((res) => {
       setSido(res.data.response.body.items.item);
