@@ -26,7 +26,6 @@ function Selector({ setOption }) {
     }
 
     axios.get(getAPI("sigungu", `&upr_cd=${e.target.value}`)).then((res) => {
-      //setSelectedOption({ sido: e.target.value });
       const data = res.data.response.body.items.item;
       if (!data) {
         setSigungu([]);
@@ -38,6 +37,7 @@ function Selector({ setOption }) {
 
   const setSigunguHandler = (e) => {
     if (e.target.value === "basic") {
+      setOption({ sigungu: "" });
       return;
     }
     setOption({ sigungu: e.target.value });
@@ -60,9 +60,18 @@ function Selector({ setOption }) {
 
   const setKindHandler = (e) => {
     if (e.target.value === "basic") {
+      setOption({ kind: "" });
       return;
     }
     setOption({ kind: e.target.value });
+  };
+
+  const setStateHandler = (e) => {
+    if (e.target.checked) {
+      setOption({ state: "protect" });
+    } else {
+      setOption({ state: null });
+    }
   };
 
   return (
@@ -112,7 +121,7 @@ function Selector({ setOption }) {
         )}
       </div>
       <div>
-        <input type="checkbox" />
+        <input type="checkbox" onChange={setStateHandler} />
         <span style={{ fontSize: "0.9rem" }}> 보호중 상태만 보기</span>
       </div>
     </Styled.SelectorLayout>

@@ -1,5 +1,5 @@
 const path = require("path");
-const RefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+//const RefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 module.exports = {
@@ -39,7 +39,7 @@ module.exports = {
           ],
           plugins: [
             "@babel/plugin-proposal-class-properties",
-            "react-refresh/babel",
+            //"react-refresh/babel",
           ],
         },
       },
@@ -57,7 +57,7 @@ module.exports = {
 
   plugins: [
     //빌드 할때마다 실행됨
-    new RefreshWebpackPlugin(),
+    //new RefreshWebpackPlugin(),
     new HtmlWebPackPlugin({
       template: "./public/index.html", // public/index.html 파일을 읽는다.
       filename: "index.html", // output으로 출력할 파일은 index.html 이다.

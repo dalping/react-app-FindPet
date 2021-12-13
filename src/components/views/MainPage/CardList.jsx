@@ -8,7 +8,7 @@ import { makeToday } from "../../../utils/makeData";
 
 function CardList({ SelectedOption }) {
   const [Data, setData] = useState([]);
-  const [Page, setPage] = useState(1);
+  const [Page, setPage] = useState(0);
   const [OpenDetailModal, setOpenDetailModal] = useState(false);
   const [DetailData, setDetailData] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
@@ -16,39 +16,44 @@ function CardList({ SelectedOption }) {
   const [Today, setToday] = useState(makeToday());
   const interSectRef = useRef();
 
+  //ref에 옵저버 연결
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, { threshold: 1 });
     if (interSectRef.current) observer.observe(interSectRef.current);
     return () => observer.disconnect();
-  }, [handleObserver]);
+  }, [Data]);
 
-  //페이지가 1인 경우 작동
   useEffect(() => {
     setFinalData(false);
-    setPage(1);
-    setData([]);
-    getData();
+
+    if (Page === 1) {
+      getData();
+    } else {
+      setPage(1);
+    }
   }, [SelectedOption]);
 
-  //페이지가 1이면 작동하지 말자
   useEffect(() => {
-    if (Page === 1 || FinalData) return;
+    if (FinalData || Page === 0) return;
     getData();
   }, [Page]);
 
-  const handleObserver = useCallback((entries) => {
+  const handleObserver = (entries) => {
     const target = entries[0];
-    if (target.isIntersecting) {
-      //페이지가 1이면 데이터가 존재할 경우에만 동작
-      //if (Data.length === 0) return;
+    if (target.isIntersecting && Data.length > 0 && !FinalData) {
       setPage((prev) => prev + 1);
     }
-  }, []);
+  };
 
+  //무한스크롤 동작 방지
   const getData = () => {
-    const optionURL = `&numOfRows=30&pageNo=${Page}` + makeURL();
+    if (isLoaded) {
+      return;
+    } else {
+      setIsLoaded(true);
+    }
 
-    setIsLoaded(true);
+    const optionURL = `&numOfRows=30&pageNo=${Page}` + makeURL();
 
     axios.get(getAPI("abandonmentPublic", optionURL)).then((res) => {
       const data = res.data.response.body.items.item;
@@ -56,14 +61,22 @@ function CardList({ SelectedOption }) {
       if (!data) {
         setFinalData(true);
         setIsLoaded(false);
+        if (Page === 1) {
+          setData([]);
+        }
         return;
       }
 
-      if (data.length < 30) {
+      //데이터 수가 30개 미만 혹은 1개(배열 아님)일 때..
+      if (data.length < 30 || !data.length) {
         setFinalData(true);
       }
 
-      setData(Data.concat(data));
+      if (Page === 1) {
+        setData([].concat(data));
+      } else {
+        setData(Data.concat(data));
+      }
       setIsLoaded(false);
     });
   };
@@ -81,7 +94,7 @@ function CardList({ SelectedOption }) {
   };
 
   const makeURL = () => {
-    let option = "";
+    let option = `&state=${SelectedOption.state}`;
 
     if (SelectedOption.sido !== "") {
       option = option + `&upr_cd=${SelectedOption.sido}`;
@@ -151,7 +164,7 @@ function CardList({ SelectedOption }) {
             margin: "20px 0",
           }}
         >
-          표시할 데이터가 없습니다...
+          더이상 표시할 데이터가 없습니다...
         </div>
       )}
     </div>

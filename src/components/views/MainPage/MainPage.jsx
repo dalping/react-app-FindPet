@@ -9,6 +9,7 @@ function MainPage() {
     sigungu: "",
     upkind: "",
     kind: "",
+    state: null, //notice //protect
   });
 
   const setOption = (option) => {
