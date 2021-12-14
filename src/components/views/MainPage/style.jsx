@@ -19,6 +19,7 @@ export const Layout = styled.div`
   padding-top: 80px;
   width: 100%;
   box-sizing: border-box;
+  min-height: calc(100vh - 50px);
 
   .MainWrapper {
     width: 1728px;

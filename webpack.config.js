@@ -4,7 +4,7 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   name: "webpack-setting",
-  mode: "development", // 실서비스 : production
+  mode: "development", // 실서비스 : production 개발 : development
   devtool: "eval", // production : hidden-source-map
   resolve: {
     extensions: [".js", ".jsx"],
