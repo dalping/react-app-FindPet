@@ -56,8 +56,9 @@ function CardList({ SelectedOption }) {
     const optionURL = `&numOfRows=30&pageNo=${Page}` + makeURL();
 
     axios.get(getAPI("abandonmentPublic", optionURL)).then((res) => {
+      
       const data = res.data.response.body.items.item;
-
+     
       if (!data) {
         setFinalData(true);
         setIsLoaded(false);
@@ -94,7 +95,11 @@ function CardList({ SelectedOption }) {
   };
 
   const makeURL = () => {
-    let option = `&state=${SelectedOption.state}`;
+
+    let option= ''
+
+    // 보호중에 체크 확인
+    if (SelectedOption.state == "protect") option = `&state=protect`
 
     if (SelectedOption.sido !== "") {
       option = option + `&upr_cd=${SelectedOption.sido}`;
@@ -111,6 +116,8 @@ function CardList({ SelectedOption }) {
     if (SelectedOption.kind !== "") {
       option = option + `&kind=${SelectedOption.kind}`;
     }
+
+    console.log(option)
 
     return option;
   };

@@ -54,6 +54,7 @@ function Selector({ setOption }) {
 
     axios.get(getAPI("kind", `&up_kind_cd=${e.target.value}`)).then((res) => {
       const data = res.data.response.body.items.item;
+      console.log(data)
       setKind(data);
     });
   };
@@ -70,7 +71,7 @@ function Selector({ setOption }) {
     if (e.target.checked) {
       setOption({ state: "protect" });
     } else {
-      setOption({ state: null });
+      setOption({ state: '' });
     }
   };
 
@@ -114,7 +115,7 @@ function Selector({ setOption }) {
             <option value="basic">품종</option>
             {Kind.map((data) => (
               <option key={data.kindCd} value={data.kindCd}>
-                {data.KNm}
+               {data.knm}
               </option>
             ))}
           </select>

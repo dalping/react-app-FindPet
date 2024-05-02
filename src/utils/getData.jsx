@@ -1,5 +1,6 @@
 const proxyCors = "https://cors-anywhere.herokuapp.com/";
 const proxyCors2 = "https://proxy-anywhere1205.herokuapp.com/";
+const porxyCors3 = "https://heroku-cors-proxy0301-34c420e6a866.herokuapp.com/"
 import { openData, myKey } from "../api/url";
 
 // sido, sigungu, shelter, kind,abandonmentPublic
@@ -10,5 +11,6 @@ import { openData, myKey } from "../api/url";
 // export const kind = `${proxyCors}kind?&_returnType=json&ServiceKey=${myKey}`;
 
 export const getAPI = (data, variable) => {
-  return `${proxyCors2}${openData}${data}?&_returnType=json&ServiceKey=${myKey}${variable}`;
+  console.log(`${porxyCors3}${openData}${data}?&_type=json&ServiceKey=${myKey}${variable}`)
+  return `${porxyCors3}${openData}${data}?&_type=json&ServiceKey=${myKey}${variable}`;
 };

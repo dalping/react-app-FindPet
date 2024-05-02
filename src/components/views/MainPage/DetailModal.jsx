@@ -26,7 +26,7 @@ function DetailModal({ data, closeDetailModal }) {
           <table className="AnimalInfo">
             <tbody>
               <tr>
-                <th>견종</th>
+                <th>품종</th>
                 <td>{data.kindCd}</td>
               </tr>
               <tr>
